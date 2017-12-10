@@ -7,9 +7,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
+import com.aykuttasil.callrecord.CallRecord;
 
 public class CallReceiver extends BroadcastReceiver {
     private static final int ID = 47981;
+    private static String currentDateTimeString;
+
+    CallRecord callRecord = new CallRecord.Builder(this)
+            .setRecordFileName("Temp")            //Just temp name for initialisation
+            .setRecordDirName("LeadManagement_Recordings")
+            .setRecordDirPath(Environment.getExternalStorageDirectory().getPath()) // Save in External SDCard
+            .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+            .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
+            .setShowSeed(true)
+            .buildService();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         try{
@@ -35,6 +48,7 @@ public class CallReceiver extends BroadcastReceiver {
     private void hideNotification(Context context) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager != null) {
+            callRecord.stopCallReceiver();          //Stop Call Recording
             manager.cancel(ID);
         }
     }
@@ -51,6 +65,9 @@ public class CallReceiver extends BroadcastReceiver {
         if (manager != null) {
             manager.cancel(ID);
             manager.notify(ID,notification.build());
+            currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date()); //Current Time for file name
+            callRecord.changeRecordFileName(currentDateTimeString);
+            callRecord.startCallRecordService();                                         //Start Call Recording Service
         }
     }
 }
