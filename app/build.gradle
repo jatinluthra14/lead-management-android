@@ -53,12 +53,8 @@ dependencies {
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
     //Sugar ORM
-<<<<<<< HEAD
     implementation 'com.github.satyan:sugar:1.5'
-=======
-    implementation 'com.github.satyan:sugar:1.3'
 
     //CallRecorder Library
     implementation 'com.github.aykuttasil:CallRecorder:1.2.6'
->>>>>>> Call Recording Feature
 }
