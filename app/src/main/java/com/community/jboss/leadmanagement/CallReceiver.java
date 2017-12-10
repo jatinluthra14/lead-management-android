@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import com.aykuttasil.callrecord.CallRecord;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CallReceiver extends BroadcastReceiver {
     private static final int ID = 47981;
@@ -65,7 +67,9 @@ public class CallReceiver extends BroadcastReceiver {
         if (manager != null) {
             manager.cancel(ID);
             manager.notify(ID,notification.build());
-            currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date()); //Current Time for file name
+            Date curDate = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss a");
+            String currentDateTimeString = format.format(curDate);
             callRecord.changeRecordFileName(currentDateTimeString);
             callRecord.startCallRecordService();                                         //Start Call Recording Service
         }
