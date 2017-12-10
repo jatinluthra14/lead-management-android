@@ -16,8 +16,9 @@ import java.util.Date;
 public class CallReceiver extends BroadcastReceiver {
     private static final int ID = 47981;
     private static String currentDateTimeString;
+    private Context context;
 
-    CallRecord callRecord = new CallRecord.Builder(this)
+    CallRecord callRecord = new CallRecord.Builder(this.context)
             .setRecordFileName("Temp")            //Just temp name for initialisation
             .setRecordDirName("LeadManagement_Recordings")
             .setRecordDirPath(Environment.getExternalStorageDirectory().getPath()) // Save in External SDCard
@@ -25,7 +26,7 @@ public class CallReceiver extends BroadcastReceiver {
             .setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
             .setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION)
             .setShowSeed(true)
-            .buildService();
+            .build();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -73,7 +74,7 @@ public class CallReceiver extends BroadcastReceiver {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss a");
             String currentDateTimeString = format.format(curDate);
             callRecord.changeRecordFileName(currentDateTimeString);
-            callRecord.startCallRecordService();                                         //Start Call Recording Service
+            callRecord.startCallReceiver();                                         //Start Call Recording Service
         }
     }
 }
