@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/edittext_vertical_spacing"
+            android:paddingBottom="@dimen/edittext_vertical_spacing"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/contact_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_launcher_background"
+                app:civ_border_color="#EEEEEE"
+                app:civ_border_width="4dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/contact_avatar"
+                android:layout_toRightOf="@+id/contact_avatar">
+
+                <TextView
+                    android:id="@+id/contact_name"
+                    style="@style/TextAppearance.AppCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tool:text="John Doe" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+</RelativeLayout>

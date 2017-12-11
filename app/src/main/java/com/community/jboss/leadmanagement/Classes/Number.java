@@ -1,6 +1,7 @@
 package com.community.jboss.leadmanagement.Classes;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Unique;
 
 /**
  * Created by carbonyl on 09/12/2017.
@@ -8,15 +9,19 @@ import com.orm.SugarRecord;
 
 public class Number extends SugarRecord {
 
-    private int number;
+    private String number;
     private Contact contact;
 
-    public Number(int number, Contact contact) {
+    public Number() {
+
+    }
+
+    public Number(String number, Contact contact) {
         this.number = number;
         this.contact = contact;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -24,7 +29,7 @@ public class Number extends SugarRecord {
         this.contact = contact;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 

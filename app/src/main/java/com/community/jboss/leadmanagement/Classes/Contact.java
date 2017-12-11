@@ -1,6 +1,8 @@
 package com.community.jboss.leadmanagement.Classes;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Table;
+import com.orm.dsl.Unique;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,16 +15,25 @@ import java.util.UUID;
 
 public class Contact extends SugarRecord {
 
-    private UUID uuid;
+    private String uuid;
     private String name;
 
+    public Contact() {
+
+    }
+
+    public Contact(String name) {
+        this.uuid = UUID.randomUUID().toString();
+        this.name = name;
+    }
+
     public Contact(UUID uuid, String name) {
-        this.uuid = uuid;
+        this.uuid = uuid.toString();
         this.name = name;
     }
 
     public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+        this.uuid = uuid.toString();
     }
 
     public void setName(String name) {
@@ -30,7 +41,7 @@ public class Contact extends SugarRecord {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return UUID.fromString(uuid);
     }
 
     public String getName() {

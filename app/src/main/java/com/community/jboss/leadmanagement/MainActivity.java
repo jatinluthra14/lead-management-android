@@ -2,6 +2,8 @@ package com.community.jboss.leadmanagement;
 
 
 import android.Manifest;
+import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.FrameMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +33,14 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
 
     private final int ID = 512;
 
@@ -41,28 +49,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PermissionManager permissionManager = new PermissionManager(this,this);
-        if(!permissionManager.permissionStatus(Manifest.permission.READ_PHONE_STATE)){
-            permissionManager.requestPermission(ID,Manifest.permission.READ_PHONE_STATE);
+        PermissionManager permissionManager = new PermissionManager(this, this);
+        if (!permissionManager.permissionStatus(Manifest.permission.READ_PHONE_STATE)) {
+            permissionManager.requestPermission(ID, Manifest.permission.READ_PHONE_STATE);
         }
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(this);
+
+        initFab();
+        setTitle(R.string.home_fragment);
     }
 
     @Override
@@ -108,42 +110,56 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             HomeFragment homeFragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,homeFragment)
+                    .replace(R.id.content_frame, homeFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_gallery) {
             ContactsFragment contactsFragment = new ContactsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,contactsFragment)
+                    .replace(R.id.content_frame, contactsFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_slideshow) {
             GroupsFragment groupsFragment = new GroupsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,groupsFragment)
+                    .replace(R.id.content_frame, groupsFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_manage) {
             SettingsFragment settingsFragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,settingsFragment)
+                    .replace(R.id.content_frame, settingsFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_share) {
             AboutUsFragment aboutUsFragment = new AboutUsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,aboutUsFragment)
+                    .replace(R.id.content_frame, aboutUsFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_send) {
             PrivacyPolicyFragment privacyPolicyFragment = new PrivacyPolicyFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame,privacyPolicyFragment)
+                    .replace(R.id.content_frame, privacyPolicyFragment)
                     .addToBackStack(null)
                     .commit();
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initFab() {
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if (fragment instanceof ContactsFragment) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(), AddContactActivity.class));
+                }
+            });
+            fab.setImageResource(R.drawable.ic_action_add);
+        }
     }
 }

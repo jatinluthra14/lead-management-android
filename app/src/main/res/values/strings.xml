@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Lead Management</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_activity_add_contact">Add Contact</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,6 +10,7 @@
     <string name="navigation_drawer_email">gci@jboss-outreach.com</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_save">SAVE</string>
 
     <string name="other_options">Other</string>
 
@@ -18,4 +20,6 @@
     <string name="settings_fragment">Settings</string>
     <string name="about_us_fragment">About Us</string>
     <string name="privacy_policy_fragment">Privacy Policy</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
 </resources>
