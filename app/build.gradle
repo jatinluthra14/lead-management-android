@@ -51,4 +51,16 @@ dependencies {
     // Icepick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
+	
+    // Sugar ORM
+    implementation 'com.github.satyan:sugar:1.5'
+	
+    //Circular Imageview
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:4.6.0"
+
+    // Architecture components
+    implementation "android.arch.lifecycle:extensions:1.0.0"
 }
