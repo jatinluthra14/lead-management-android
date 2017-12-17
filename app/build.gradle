@@ -51,10 +51,10 @@ dependencies {
     // Icepick
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
-	
-    // Sugar ORM
+
+    //Sugar ORM
     implementation 'com.github.satyan:sugar:1.5'
-	
+
     //Circular Imageview
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
 
