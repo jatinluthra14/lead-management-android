@@ -1,14 +1,16 @@
 package com.community.jboss.leadmanagement.Classes;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Unique;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 /**
  * Created by carbonyl on 09/12/2017.
  */
 
-public class Number extends SugarRecord {
-
+@Entity
+public class Number{
+    @PrimaryKey @NonNull
     private String number;
     private Contact contact;
 

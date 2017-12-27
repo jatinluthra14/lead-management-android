@@ -1,13 +1,16 @@
 package com.community.jboss.leadmanagement.Classes;
 
-import com.orm.SugarRecord;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 /**
  * Created by carbonyl on 09/12/2017.
  */
 
-public class Tag extends SugarRecord {
-
+@Entity
+public class Tag{
+    @PrimaryKey @NonNull
     private String key;
     private String value;
     private Contact contact;

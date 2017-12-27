@@ -1,8 +1,8 @@
 package com.community.jboss.leadmanagement.Classes;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Table;
-import com.orm.dsl.Unique;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +13,13 @@ import java.util.UUID;
  * Created by carbonyl on 09/12/2017.
  */
 
-public class Contact extends SugarRecord {
+@Entity
+public class Contact {
 
+    @PrimaryKey
+    @NonNull
     private String uuid;
     private String name;
-
-    public Contact() {
-
-    }
 
     public Contact(String name) {
         this.uuid = UUID.randomUUID().toString();
@@ -48,16 +47,4 @@ public class Contact extends SugarRecord {
         return name;
     }
 
-    public List<Number> getNumbers() {
-        return Number.find(Number.class, "contact = ?", this.getId().toString());
-    }
-
-    public Map<String, String> getTags() {
-        List<Tag> tagList = Tag.find(Tag.class, "contact = ?", this.getId().toString());
-        Map<String, String> tags = new HashMap<>();
-        for (Tag tag: tagList) {
-            tags.put(tag.getKey(), tag.getValue());
-        }
-        return tags;
-    }
 }

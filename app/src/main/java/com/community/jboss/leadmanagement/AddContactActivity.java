@@ -18,6 +18,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.arch.persistence.room.Room;
 
 public class AddContactActivity extends AppCompatActivity {
 
@@ -30,6 +31,9 @@ public class AddContactActivity extends AppCompatActivity {
 
     private Number currentUser;
     private UUID userUUID;
+
+    AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+            AppDatabase.class, "database-name").build();
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -105,17 +109,17 @@ public class AddContactActivity extends AppCompatActivity {
                 this.finish();
             }else if (currentUser.getNumber().length()>0) {
                 currentUser.getContact().setName(_name);
-                currentUser.getContact().save();
+                db.contactDAO().updateContact(currentUser.getContact());
                 currentUser.setNumber(_number);
-                currentUser.save();
+                db.numberDAO().updateNumber(currentUser);
                 this.finish();
             }
         }else {
             Contact contact = new Contact(_name);
-            contact.save();
+            db.contactDAO().addContact(contact);
 
             Number number = new Number(_number, contact);
-            number.save();
+            db.numberDAO().addNumber(number);
 
             this.finish();
         }
@@ -125,7 +129,7 @@ public class AddContactActivity extends AppCompatActivity {
     private Number findUserByNumber(String number){
         if(number!=null) {
             if (number.length() > 0) {
-                List<Number> data = Number.find(Number.class, "number = ?", number);
+                List<Number> data = db.numberDAO().getNumberusingNumber(number);
                 if (data.size() > 0) {
                     for(Number contact:data){
                         if(userUUID!=null && contact.getContact()!=null){

@@ -1,10 +1,10 @@
 package com.community.jboss.leadmanagement;
 
-import com.orm.SugarApp;
+import android.app.Application;
 
 import timber.log.Timber;
 
-public class LeadApp extends SugarApp {
+public class LeadApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
