@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.community.jboss.leadmanagement.PermissionManager;
 import com.community.jboss.leadmanagement.R;
@@ -24,10 +25,17 @@ import com.community.jboss.leadmanagement.SettingsActivity;
 import com.community.jboss.leadmanagement.main.contacts.ContactsFragment;
 import com.community.jboss.leadmanagement.main.contacts.editcontact.EditContactActivity;
 import com.community.jboss.leadmanagement.main.groups.GroupsFragment;
+import com.community.jboss.leadmanagement.main.model.Result;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +55,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
 
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
@@ -168,4 +178,5 @@ public class MainActivity extends AppCompatActivity
             fab.setImageResource(R.drawable.ic_add_white_24dp);
         }
     }
+
 }
