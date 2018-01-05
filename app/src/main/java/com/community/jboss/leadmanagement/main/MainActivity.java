@@ -17,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.community.jboss.leadmanagement.PermissionManager;
 import com.community.jboss.leadmanagement.R;
@@ -25,6 +28,20 @@ import com.community.jboss.leadmanagement.main.contacts.ContactsFragment;
 import com.community.jboss.leadmanagement.main.contacts.editcontact.EditContactActivity;
 import com.community.jboss.leadmanagement.main.contacts.importcontact.ImportContactActivity;
 import com.community.jboss.leadmanagement.main.groups.GroupsFragment;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +63,11 @@ public class MainActivity extends AppCompatActivity
     private MainActivityViewModel mViewModel;
     private PermissionManager permissionManager;
 
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mSignInClient;
+    private SignInButton signInButton;
+    private Button signOutButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +78,25 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getSelectedNavItem().observe(this, this::displayNavigationItem);
 
         permissionManager = new PermissionManager(this, this);
+
+        try{
+            FirebaseApp.initializeApp(this, new FirebaseOptions.Builder()
+                    .setApiKey("AIzaSyCKgYMhe6jTk7_B8_U9tevbKMNO6WUI6Ok")
+                    .setApplicationId("1:327376189668:android:78ce05f231d482c3")
+                    .setDatabaseUrl("https://lead-management-android.firebaseio.com")
+                    .setGcmSenderId("327376189668")
+                    .setStorageBucket("dev-sand-dee96.appspot.com").build());
+
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken("327376189668-tga30up0ovg9v7gm3bqmfaf1cip0rvk4.apps.googleusercontent.com")
+                    .requestEmail()
+                    .build();
+            mSignInClient = GoogleSignIn.getClient(this, gso);
+            mAuth = FirebaseAuth.getInstance();
+        }catch (IllegalStateException ignored){
+
+        }
+        
         if (!permissionManager.permissionStatus(Manifest.permission.READ_PHONE_STATE)) {
             permissionManager.requestPermission(ID, Manifest.permission.READ_PHONE_STATE);
         }
@@ -75,6 +116,84 @@ public class MainActivity extends AppCompatActivity
         }
 
         initFab();
+
+        signInButton = navigationView.getHeaderView(0).findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        signOutButton = navigationView.getHeaderView(0).findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
+        });
+    }
+
+    @Override
+     public void onStart() {
+                super.onStart();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                updateUI(currentUser);
+            }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 105) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                mAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(this, task2 -> {
+                            if (task2.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                updateUI(null);
+                            }
+                        });
+            } catch (Exception ignored) {
+
+            }
+        }
+
+    }
+
+
+    private void signOut() {
+        if(mAuth.getCurrentUser()!=null){
+            mAuth.signOut();
+            updateUI(null);
+        }
+    }
+
+    private void updateUI(FirebaseUser user) {
+        TextView userText = navigationView.getHeaderView(0).findViewById(R.id.userText);
+        TextView emailText = navigationView.getHeaderView(0).findViewById(R.id.emailText);
+
+        if (user != null) {
+            userText.setText(user.getDisplayName());
+            emailText.setText(user.getEmail());
+            signInButton.setVisibility(View.GONE);
+            signOutButton.setVisibility(View.VISIBLE);
+        } else {
+            userText.setText("Signed Out");
+            emailText.setText("");
+            signInButton.setVisibility(View.VISIBLE);
+            signOutButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = mSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, 105);
     }
 
     private void selectInitialNavigationItem() {

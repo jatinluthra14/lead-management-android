@@ -5,7 +5,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_pic">Profile Image</string>
-    <string name="navigation_drawer_name">C0d3rThomas</string>
+    <string name="navigation_drawer_name">Sign in Please</string>
     <string name="navigation_drawer_email">gci@jboss-outreach.com</string>
 
     <string name="action_settings">Settings</string>
@@ -34,4 +34,6 @@
     <string name="import_contacts">Import contacts</string>
 
 
+    <string name="sign_out">Sign Out</string>
+    <string name="signing_in">Signing In</string>
 </resources>
