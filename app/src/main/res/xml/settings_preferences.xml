@@ -11,4 +11,8 @@
             android:defaultValue="Default value"/>
     </android.support.v7.preference.PreferenceCategory>
 
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:key="nightmode"
+        android:title="Enable Night Mode"/>
+
 </android.support.v7.preference.PreferenceScreen>
